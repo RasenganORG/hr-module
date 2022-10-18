@@ -20,7 +20,8 @@ const devConfig = {
       name: "humanResources",
       filename: "remoteEntry.js",
       exposes: {
-        "./HumanResourcesApp": "./src/bootstrap",
+        // "./HumanResourcesApp": "./src/bootstrap",
+        "./HumanResourcesRoutes": "./src/routes",
       },
       shared: packageJson.dependencies,
     }),

@@ -1,7 +1,6 @@
 import React from "react"
 import { createRoot } from "react-dom/client"
 import App from "./App"
-// import { createMemoryHistory, createBrowserHistory } from "history"
 
 const mount = (el) => {
   const root = createRoot(el)
@@ -9,7 +8,7 @@ const mount = (el) => {
 }
 
 if (process.env.NODE_ENV === "development") {
-  const el = document.querySelector("#hr-dev-root")
+  const el = document.querySelector("#human-resources-root")
 
   if (el) {
     mount(el)
