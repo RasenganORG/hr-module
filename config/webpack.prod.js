@@ -7,11 +7,11 @@ const prodConfig = {
   mode: "production",
   output: {
     filename: "[name].[contenthash].js",
-    publicPath: "/humanResources/latest/",
+    publicPath: "/hr/latest/",
   },
   plugins: [
     new ModuleFederationPlugin({
-      name: "humanResources",
+      name: "/hr",
       filename: "remoteEntry.js",
       exposes: {
         "./HumanResourcesApp": "./src/bootstrap",

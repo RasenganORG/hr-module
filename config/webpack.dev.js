@@ -17,11 +17,10 @@ const devConfig = {
   },
   plugins: [
     new ModuleFederationPlugin({
-      name: "humanResources",
+      name: "hr",
       filename: "remoteEntry.js",
       exposes: {
         "./HumanResourcesApp": "./src/bootstrap",
-        // "./HumanResourcesRoutes": "./src/routes",
       },
       shared: packageJson.dependencies,
     }),

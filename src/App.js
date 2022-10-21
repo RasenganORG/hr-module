@@ -14,9 +14,9 @@ const Root = () => (
 
 const App = () => {
   return (
-    <div style={{ backgroundColor: "red" }}>
+    <div>
       <Suspense fallback={null}>
-        <BrowserRouter basename={"/humanResources"}>
+        <BrowserRouter basename='hr'>
           <Routes>
             <Route path={"/"} element={<Root />}>
               <Route path={"/hr-basics"} element={<h1>Basics</h1>} />

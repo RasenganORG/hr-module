@@ -6,8 +6,8 @@ function Dashboard() {
   return (
     <div>
       <h1>HR Dashboard</h1>
-      <button onClick={() => navigate("/humanResources")}>hey</button>
-      <button onClick={() => navigate("/humanResources/1")}>1</button>
+      <button onClick={() => navigate("/hr")}>hey</button>
+      <button onClick={() => navigate("/hr/1")}>1</button>
     </div>
   )
 }

@@ -20,8 +20,7 @@
     "webpack-merge": "^5.8.0"
   },
   "scripts": {
-    "start": "react-scripts start",
-    "start-webpack": "webpack serve --config config/webpack.dev.js",
+    "start": "webpack serve --config config/webpack.dev.js",
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject"

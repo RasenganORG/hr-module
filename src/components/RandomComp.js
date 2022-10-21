@@ -10,8 +10,8 @@ function RandomComp() {
   return (
     <div>
       <h1>Radnom comp {params.id}</h1>
-      <button onClick={() => navigate("/humanResources")}>hey</button>
-      <button onClick={() => navigate("/humanResources/1")}>1</button>
+      <button onClick={() => navigate("/hr")}>hey</button>
+      <button onClick={() => navigate("/hr/1")}>1</button>
     </div>
   )
 }
