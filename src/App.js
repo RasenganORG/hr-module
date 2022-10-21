@@ -1,25 +1,32 @@
-import logo from './logo.svg';
-import './App.css';
+import React, { Suspense } from "react"
+import { BrowserRouter, Link, Outlet, Route, Routes } from "react-router-dom"
 
-function App() {
+const Root = () => (
+  <div>
+    <nav>
+      <Link to='/hr-basics'>HR-basics</Link>
+      <br />
+      <Link to='/hr-info'>HR-info</Link>
+    </nav>
+    <Outlet />
+  </div>
+)
+
+const App = () => {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div>
+      <Suspense fallback={null}>
+        <BrowserRouter basename='hr'>
+          <Routes>
+            <Route path={"/"} element={<Root />}>
+              <Route path={"/hr-basics"} element={<h1>Basics</h1>} />
+              <Route path={"/hr-info"} element={<h1>Info</h1>} />
+            </Route>
+          </Routes>
+        </BrowserRouter>
+      </Suspense>
     </div>
-  );
+  )
 }
 
-export default App;
+export default App
