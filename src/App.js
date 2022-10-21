@@ -1,16 +1,6 @@
 import React, { Suspense } from "react"
 import { BrowserRouter, Link, Outlet, Route, Routes } from "react-router-dom"
-
-const Root = () => (
-  <div>
-    <nav>
-      <Link to='/hr-basics'>HR-basics</Link>
-      <br />
-      <Link to='/hr-info'>HR-info</Link>
-    </nav>
-    <Outlet />
-  </div>
-)
+import LayoutPage from "./components/layoutPage/LayoutPage"
 
 const App = () => {
   return (
@@ -18,9 +8,12 @@ const App = () => {
       <Suspense fallback={null}>
         <BrowserRouter basename='hr'>
           <Routes>
-            <Route path={"/"} element={<Root />}>
-              <Route path={"/hr-basics"} element={<h1>Basics</h1>} />
-              <Route path={"/hr-info"} element={<h1>Info</h1>} />
+            <Route path={"/"} element={<LayoutPage />}>
+              <Route index element={<h1>Dashboard</h1>} />
+              <Route path={"/employees"} element={<h1>Employees</h1>} />
+              <Route path={"/employees/:id"} element={<h1>Employee</h1>} />
+              <Route path={"/report"} element={<h1>Report</h1>} />
+              <Route path={"/calendar"} element={<h1>Calendar</h1>} />
             </Route>
           </Routes>
         </BrowserRouter>
