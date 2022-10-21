@@ -11,7 +11,7 @@ const prodConfig = {
   },
   plugins: [
     new ModuleFederationPlugin({
-      name: "/hr",
+      name: "hr",
       filename: "remoteEntry.js",
       exposes: {
         "./HumanResourcesApp": "./src/bootstrap",
