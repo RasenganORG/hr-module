@@ -1,12 +1,11 @@
 import React, { useState } from "react"
 import {
   DesktopOutlined,
-  FileOutlined,
   PieChartOutlined,
   TeamOutlined,
-  UserOutlined,
+  CalendarOutlined,
 } from "@ant-design/icons"
-import { Layout, Menu, Input, Row, Col, Dropdown, Button, Avatar } from "antd"
+import { Layout, Menu } from "antd"
 const { Header, Content, Footer, Sider } = Layout
 import { Outlet, NavLink } from "react-router-dom"
 import "antd/dist/antd.css"
@@ -14,24 +13,24 @@ import "./layout.css"
 
 const items = [
   {
-    key: "",
+    key: "dashboard",
     label: <NavLink to='/'>Dashboard</NavLink>,
+    icon: <DesktopOutlined />,
   },
   {
     key: "employees",
-    label: (
-      <>
-        <NavLink to={`/employees`}>Employees</NavLink>
-      </>
-    ),
+    label: <NavLink to={`/employees`}>Employees</NavLink>,
+    icon: <TeamOutlined />,
   },
   {
     key: "Report",
     label: <NavLink to='/report'>Report</NavLink>,
+    icon: <PieChartOutlined />,
   },
   {
     key: "Calendar",
     label: <NavLink to='/calendar'>Calendar</NavLink>,
+    icon: <CalendarOutlined />,
   },
 ]
 
@@ -43,26 +42,19 @@ const LayoutPage = () => {
         minHeight: "100vh",
       }}
     >
-      <Sider
-        collapsible
-        collapsed={collapsed}
-        onCollapse={(value) => setCollapsed(value)}
-      >
-        <h1 style={{ color: "white", margin: "20px" }}>EAU DE WEB</h1>
-        <Menu
-          theme='dark'
-          defaultSelectedKeys={["1"]}
-          mode='inline'
-          items={items}
-        />
-      </Sider>
+      <Menu
+        theme='dark'
+        defaultSelectedKeys={["1"]}
+        mode='horizontal'
+        items={items}
+      />
       <Layout className='site-layout'>
-        <Header
+        {/* <Header
           className='site-layout-background'
           style={{
             padding: 0,
           }}
-        />
+        /> */}
         <Content
           style={{
             margin: "0 16px",
@@ -78,13 +70,6 @@ const LayoutPage = () => {
             <Outlet />
           </div>
         </Content>
-        <Footer
-          style={{
-            textAlign: "center",
-          }}
-        >
-          HR
-        </Footer>
       </Layout>
     </Layout>
   )

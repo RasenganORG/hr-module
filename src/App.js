@@ -10,11 +10,15 @@ const App = () => {
           <Routes>
             <Route path={"/"} element={<LayoutPage />}>
               <Route index element={<h1>Dashboard</h1>} />
-              <Route path={"/employees"} element={<h1>Employees</h1>} />
-              <Route path={"/employees/:id"} element={<h1>Employee</h1>} />
-              <Route path={"/report"} element={<h1>Report</h1>} />
-              <Route path={"/calendar"} element={<h1>Calendar</h1>} />
+              <Route path={"employees"} element={<h1>Employees</h1>} />
+              <Route path={"employees/:id"} element={<h1>Employee</h1>} />
+              <Route path={"report"} element={<h1>Report</h1>} />
+              <Route path={"calendar"} element={<h1>Calendar</h1>} />
             </Route>
+            <Route
+              path={"*"}
+              element={<h1>404 internii nu au gasit pagina</h1>}
+            />
           </Routes>
         </BrowserRouter>
       </Suspense>
