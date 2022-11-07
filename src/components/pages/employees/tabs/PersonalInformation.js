@@ -15,80 +15,84 @@ import {
 import RowEmployee from './RowEmployee';
 import CardEmployee from './CardEmployee';
 
-function PersonalInformation() {
+function PersonalInformation({ data }) {
+  const [form] = Form.useForm();
+  form.setFieldsValue(data);
+
   const formInputsList = [
     {
       firstCol: (
         <Form.Item name='name' label='Name'>
-          <Input placeholder='name' prefix={<UserOutlined />} />
+          <Input placeholder={data.name} prefix={<UserOutlined />} />
         </Form.Item>
       ),
       secondCol: (
         <Form.Item name='email' label='Email' rules={[{ type: 'email' }]}>
-          <Input placeholder='example@edw.com' prefix={<MailOutlined />} />
+          <Input placeholder={data.email} prefix={<MailOutlined />} />
         </Form.Item>
       ),
     },
     {
       firstCol: (
         <Form.Item name='department' label='Department'>
-          <Input placeholder='front end' prefix={<TeamOutlined />} />
+          <Input placeholder={data.department} prefix={<TeamOutlined />} />
         </Form.Item>
       ),
       secondCol: (
         <Form.Item name='jobTitle' label='Job Title'>
-          <Input
-            placeholder='Front End Developer'
-            prefix={<LaptopOutlined />}
-          />
+          <Input placeholder={data.jobTitle} prefix={<LaptopOutlined />} />
         </Form.Item>
       ),
     },
     {
       firstCol: (
         <Form.Item name='country' label='Country'>
-          <Input placeholder='Romania' prefix={<GlobalOutlined />} />
+          <Input placeholder={data.country} prefix={<GlobalOutlined />} />
         </Form.Item>
       ),
       secondCol: (
         <Form.Item name='phoneNumber' label='Phone Number'>
-          <Input placeholder='04627186471' prefix={<PhoneOutlined />} />
+          <Input placeholder={data.phoneNumber} prefix={<PhoneOutlined />} />
         </Form.Item>
       ),
     },
     {
       firstCol: (
         <Form.Item name='adress' label='Adress'>
-          <Input placeholder='Str. Gh. Sontu 8' prefix={<HomeOutlined />} />
+          <Input placeholder={data.adress} prefix={<HomeOutlined />} />
         </Form.Item>
       ),
       secondCol: (
         <Form.Item name='teleWorkAdress' label='TeleWork Adress'>
-          <Input placeholder='adress' prefix={<CompassOutlined />} />
+          <Input
+            placeholder={data.teleWorkAdress}
+            prefix={<CompassOutlined />}
+          />
         </Form.Item>
       ),
     },
     {
       firstCol: (
         <Form.Item name='cnp' label='CNP'>
-          <Input placeholder='47217510851821421' />
+          <Input placeholder={data.cnp} />
         </Form.Item>
       ),
       secondCol: (
         <Form.Item name='idSeries' label='Id Series'>
-          <Input placeholder='XY 12345' />
+          <Input placeholder={data.idSeries} />
         </Form.Item>
       ),
     },
     {
-      firstCol: (
-        <Form.Item name='idExpirationDate' label='Id Expiration Date'>
-          <DatePicker format={'DD/MM/YYYY'} />
-        </Form.Item>
-      ),
+      // firstCol: (
+      //   <Form.Item name='idExpirationDate' label='Id Expiration Date'>
+      //     <DatePicker format={'DD/MM/YYYY'} />
+      //   </Form.Item>
+      // ),
+      firstCol: null,
       secondCol: (
         <Form.Item name='healthHouse' label='Health House'>
-          <Input placeholder='casa de asigurare' />
+          <Input placeholder={data.healthHouse} value={'dwhabfaj'} />
         </Form.Item>
       ),
     },
@@ -100,13 +104,7 @@ function PersonalInformation() {
               gutter: 16,
               column: 3,
             }}
-            dataSource={[
-              {
-                name: 'John Doe',
-                birthday: '1/1/2001',
-                cnp: '89374893278759',
-              },
-            ]}
+            dataSource={data.peopleInSupport}
             renderItem={(item) => (
               <List.Item>
                 <CardEmployee item={item} />
@@ -118,9 +116,10 @@ function PersonalInformation() {
       secondCol: null,
     },
   ];
+
   return (
     <div>
-      <Form name='personal-information' layout={'vertical'}>
+      <Form name='personal-information' layout={'vertical'} form={form}>
         {formInputsList.map((elem, i) => (
           <RowEmployee
             firstCol={elem.firstCol}
