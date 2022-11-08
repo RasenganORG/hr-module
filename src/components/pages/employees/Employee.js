@@ -28,13 +28,7 @@ function Employee() {
     dispatch(getEmployee(employeeId));
   }, [employeeId]);
 
-  console.log({ employee });
-
-  return (
-    employee.personalInformation !== undefined && (
-      <Tabs items={items} centered />
-    )
-  );
+  return employee.id === employeeId && <Tabs items={items} centered />;
 }
 
 export default Employee;

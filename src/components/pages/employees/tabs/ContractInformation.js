@@ -1,90 +1,94 @@
-import React from 'react';
-import { Form, Input, DatePicker, List, Checkbox } from 'antd';
+import React, { useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { Form, Input, DatePicker, List, Checkbox, Button } from 'antd';
 import {
-  UserOutlined,
-  IdcardOutlined,
   HistoryOutlined,
-  HomeOutlined,
-  MailOutlined,
-  PhoneOutlined,
   TeamOutlined,
-  CompassOutlined,
-  LaptopOutlined,
-  GlobalOutlined,
+  PoundCircleOutlined,
+  FieldNumberOutlined,
+  EditOutlined,
 } from '@ant-design/icons';
-import RowEmployee from './RowEmployee';
+import RowEmployee from './utils/RowEmployee';
+import moment from 'moment';
+import { editEmployee } from '../../../../store/slices/employees/employeesSlice';
 
 function ContractInformation({ data }) {
-  const [form] = Form.useForm();
-  form.setFieldsValue(data);
+  const dispatch = useDispatch();
+  const { employee } = useSelector((state) => state.employees);
+  const [showInput, setShowInput] = useState(false);
+  const initialValues = {
+    ...data,
+    contractStartDate: data.contractStartDate
+      ? moment(data.contractStartDate, 'DD-MM-YYYY')
+      : null,
+    contractEndDate: data.contractEndDate
+      ? moment(data.contractEndDate, 'DD-MM-YYYY')
+      : null,
+    probationExpirationDate: data.probationExpirationDate
+      ? moment(data.probationExpirationDate, 'DD-MM-YYYY')
+      : null,
+    contractExpirationDate: data.contractExpirationDate
+      ? moment(data.contractExpirationDate, 'DD-MM-YYYY')
+      : null,
+    ssm: data.ssm ? moment(data.ssm, 'DD-MM-YYYY') : null,
+    laborMedicine: data.laborMedicine
+      ? moment(data.laborMedicine, 'DD-MM-YYYY')
+      : null,
+  };
+
   const formInputsList = [
     {
       firstCol: (
         <Form.Item name='contractType' label='Contract Type'>
-          <Input placeholder={data.contractType} prefix={<TeamOutlined />} />
+          {showInput ? (
+            <Input prefix={<TeamOutlined />} />
+          ) : (
+            <Input prefix={<TeamOutlined />} readOnly={true} />
+          )}
         </Form.Item>
       ),
       secondCol: (
         <Form.Item name='contractNumber' label='Contract Number'>
-          <Input
-            placeholder={data.contractNumber}
-            prefix={<LaptopOutlined />}
-          />
+          {showInput ? (
+            <Input prefix={<FieldNumberOutlined />} />
+          ) : (
+            <Input prefix={<FieldNumberOutlined />} readOnly={true} />
+          )}
         </Form.Item>
       ),
     },
     {
       firstCol: (
         <Form.Item name='contractStartDate' label='Contract Start Date'>
-          <DatePicker
-            format={'DD/MM/YYYY'}
-            value={
-              data.contractStartDate != null
-                ? new Date(data.contractStartDate).toLocaleDateString()
-                : null
-            }
-            prefix={<GlobalOutlined />}
-          />
+          {showInput ? <DatePicker /> : <DatePicker readOnly={true} />}
         </Form.Item>
       ),
       secondCol: (
         <Form.Item name='contractEndDate' label='Contract End Date'>
-          <DatePicker
-            format={'DD/MM/YYYY'}
-            value={
-              data.contractEndDate != null
-                ? new Date(data.contractEndDate).toLocaleDateString()
-                : null
-            }
-            prefix={<GlobalOutlined />}
-          />
+          {showInput ? <DatePicker /> : <DatePicker readOnly={true} />}
         </Form.Item>
       ),
     },
     {
       firstCol: (
-        <Form.Item name='taxExempt' label='Tax Exempt'>
-          <Checkbox />
+        <Form.Item name='taxExempt' label='Tax Exempt' valuePropName='checked'>
+          {showInput ? <Checkbox /> : <Checkbox readOnly={true} />}
         </Form.Item>
       ),
       secondCol: (
         <Form.Item name='salary' label='Salary'>
-          <Input placeholder='XY 12345' />
+          {showInput ? (
+            <Input prefix={<PoundCircleOutlined />} />
+          ) : (
+            <Input prefix={<PoundCircleOutlined />} readOnly={true} />
+          )}
         </Form.Item>
       ),
     },
     {
       firstCol: (
         <Form.Item name='probationExpirationDate' label='Probation End Date'>
-          <DatePicker
-            format={'DD/MM/YYYY'}
-            prefix={<CompassOutlined />}
-            value={
-              data.probationExpirationDate != null
-                ? new Date(data.probationExpirationDate).toLocaleDateString()
-                : null
-            }
-          />
+          {showInput ? <DatePicker /> : <DatePicker readOnly={true} />}
         </Form.Item>
       ),
       secondCol: (
@@ -92,60 +96,82 @@ function ContractInformation({ data }) {
           name='contractExpirationDate'
           label='Contract Expiration Date'
         >
-          <DatePicker
-            format={'DD/MM/YYYY'}
-            value={
-              data.contractExpirationDate != null
-                ? new Date(data.contractExpirationDate).toLocaleDateString()
-                : null
-            }
-          />
+          {showInput ? <DatePicker /> : <DatePicker readOnly={true} />}
         </Form.Item>
       ),
     },
     {
       firstCol: (
         <Form.Item name='ssm' label='SSM'>
-          <DatePicker
-            format={'DD/MM/YYYY'}
-            value={
-              data.ssm != null ? new Date(data.ssm).toLocaleDateString() : null
-            }
-          />
+          {showInput ? <DatePicker /> : <DatePicker readOnly={true} />}
         </Form.Item>
       ),
       secondCol: (
         <Form.Item name='laborMedicine' label='Labor Medicine'>
-          <DatePicker
-            format={'DD/MM/YYYY'}
-            value={
-              data.laborMedicine != null
-                ? new Date(data.laborMedicine).toLocaleDateString()
-                : null
-            }
-          />
+          {showInput ? <DatePicker /> : <DatePicker readOnly={true} />}
         </Form.Item>
       ),
     },
     {
       firstCol: (
         <Form.Item name='history' label='Changes History'>
-          <Input placeholder='history' prefix={<HistoryOutlined />} />
+          {showInput ? (
+            <Input prefix={<HistoryOutlined />} />
+          ) : (
+            <Input prefix={<HistoryOutlined />} readOnly={true} />
+          )}
         </Form.Item>
       ),
       secondCol: (
         <Form.Item name='workState' label='Work State'>
-          <Input placeholder='home' />
+          {showInput ? <Input /> : <Input readOnly={true} />}
         </Form.Item>
       ),
     },
   ];
 
-  console.log(new Date(data.probationExpirationDate));
+  const handleFinish = (values) => {
+    const data = {
+      contractInformation: {
+        ...values,
+        contractStartDate: values.contractStartDate
+          ? moment(values.contractStartDate).format('DD-MM-YYYY')
+          : null,
+        contractEndDate: values.contractEndDate
+          ? moment(values.contractEndDate).format('DD-MM-YYYY')
+          : null,
+        probationExpirationDate: values.probationExpirationDate
+          ? moment(values.probationExpirationDate).format('DD-MM-YYYY')
+          : null,
+        contractExpirationDate: values.contractExpirationDate
+          ? moment(values.contractExpirationDate).format('DD-MM-YYYY')
+          : null,
+        ssm: values.ssm ? moment(values.ssm).format('DD-MM-YYYY') : null,
+        laborMedicine: values.laborMedicine
+          ? moment(values.laborMedicine).format('DD-MM-YYYY')
+          : null,
+      },
+      id: employee.id,
+    };
+    console.log(data);
+    dispatch(editEmployee(data));
+  };
 
   return (
     <div>
-      <Form name='contract-information' layout={'vertical'} form={form}>
+      <Button
+        shape={'circle'}
+        type='primary'
+        onClick={() => setShowInput(!showInput)}
+      >
+        <EditOutlined />
+      </Button>
+      <Form
+        name='contract-information'
+        layout={'vertical'}
+        initialValues={initialValues}
+        onFinish={handleFinish}
+      >
         {formInputsList.map((elem, i) => (
           <RowEmployee
             firstCol={elem.firstCol}
@@ -153,6 +179,11 @@ function ContractInformation({ data }) {
             key={i}
           />
         ))}
+        {showInput && (
+          <Button type='primary' htmlType='submit'>
+            Save
+          </Button>
+        )}
       </Form>
     </div>
   );

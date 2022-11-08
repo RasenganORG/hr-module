@@ -1,9 +1,9 @@
-import React from 'react';
-import { Form, Input, DatePicker, List } from 'antd';
+import React, { useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { Form, Input, DatePicker, List, Button } from 'antd';
 import {
   UserOutlined,
   IdcardOutlined,
-  HistoryOutlined,
   HomeOutlined,
   MailOutlined,
   PhoneOutlined,
@@ -11,88 +11,126 @@ import {
   CompassOutlined,
   LaptopOutlined,
   GlobalOutlined,
+  EditOutlined,
 } from '@ant-design/icons';
-import RowEmployee from './RowEmployee';
-import CardEmployee from './CardEmployee';
+import RowEmployee from './utils/RowEmployee';
+import CardEmployee from './utils/CardEmployee';
+import moment from 'moment';
+import { editEmployee } from '../../../../store/slices/employees/employeesSlice';
 
 function PersonalInformation({ data }) {
-  const [form] = Form.useForm();
-  form.setFieldsValue(data);
+  const dispatch = useDispatch();
+  const { employee } = useSelector((state) => state.employees);
+  const [showInput, setShowInput] = useState(false);
+  const initialValues = {
+    ...data,
+    idExpirationDate: data.idExpirationDate
+      ? moment(data.idExpirationDate, 'DD-MM-YYYY')
+      : null,
+  };
 
   const formInputsList = [
     {
       firstCol: (
         <Form.Item name='name' label='Name'>
-          <Input placeholder={data.name} prefix={<UserOutlined />} />
+          {showInput ? (
+            <Input prefix={<UserOutlined />} />
+          ) : (
+            <Input prefix={<UserOutlined />} readOnly={true} />
+          )}
         </Form.Item>
       ),
       secondCol: (
         <Form.Item name='email' label='Email' rules={[{ type: 'email' }]}>
-          <Input placeholder={data.email} prefix={<MailOutlined />} />
+          {showInput ? (
+            <Input prefix={<MailOutlined />} />
+          ) : (
+            <Input prefix={<MailOutlined />} readOnly={true} />
+          )}
         </Form.Item>
       ),
     },
     {
       firstCol: (
         <Form.Item name='department' label='Department'>
-          <Input placeholder={data.department} prefix={<TeamOutlined />} />
+          {showInput ? (
+            <Input prefix={<TeamOutlined />} />
+          ) : (
+            <Input prefix={<TeamOutlined />} readOnly={true} />
+          )}
         </Form.Item>
       ),
       secondCol: (
         <Form.Item name='jobTitle' label='Job Title'>
-          <Input placeholder={data.jobTitle} prefix={<LaptopOutlined />} />
+          {showInput ? (
+            <Input prefix={<LaptopOutlined />} />
+          ) : (
+            <Input prefix={<LaptopOutlined />} readOnly={true} />
+          )}
         </Form.Item>
       ),
     },
     {
       firstCol: (
         <Form.Item name='country' label='Country'>
-          <Input placeholder={data.country} prefix={<GlobalOutlined />} />
+          {showInput ? (
+            <Input prefix={<GlobalOutlined />} />
+          ) : (
+            <Input prefix={<GlobalOutlined />} readOnly={true} />
+          )}
         </Form.Item>
       ),
       secondCol: (
         <Form.Item name='phoneNumber' label='Phone Number'>
-          <Input placeholder={data.phoneNumber} prefix={<PhoneOutlined />} />
+          {showInput ? (
+            <Input prefix={<PhoneOutlined />} />
+          ) : (
+            <Input prefix={<PhoneOutlined />} readOnly={true} />
+          )}
         </Form.Item>
       ),
     },
     {
       firstCol: (
         <Form.Item name='adress' label='Adress'>
-          <Input placeholder={data.adress} prefix={<HomeOutlined />} />
+          {showInput ? (
+            <Input prefix={<HomeOutlined />} />
+          ) : (
+            <Input prefix={<HomeOutlined />} readOnly={true} />
+          )}
         </Form.Item>
       ),
       secondCol: (
         <Form.Item name='teleWorkAdress' label='TeleWork Adress'>
-          <Input
-            placeholder={data.teleWorkAdress}
-            prefix={<CompassOutlined />}
-          />
+          {showInput ? (
+            <Input prefix={<CompassOutlined />} />
+          ) : (
+            <Input prefix={<CompassOutlined />} readOnly={true} />
+          )}
         </Form.Item>
       ),
     },
     {
       firstCol: (
         <Form.Item name='cnp' label='CNP'>
-          <Input placeholder={data.cnp} />
+          {showInput ? <Input /> : <Input readOnly={true} />}
         </Form.Item>
       ),
       secondCol: (
         <Form.Item name='idSeries' label='Id Series'>
-          <Input placeholder={data.idSeries} />
+          {showInput ? <Input /> : <Input readOnly={true} />}
         </Form.Item>
       ),
     },
     {
-      // firstCol: (
-      //   <Form.Item name='idExpirationDate' label='Id Expiration Date'>
-      //     <DatePicker format={'DD/MM/YYYY'} />
-      //   </Form.Item>
-      // ),
-      firstCol: null,
+      firstCol: (
+        <Form.Item name='idExpirationDate' label='Id Expiration Date'>
+          {showInput ? <DatePicker /> : <DatePicker readOnly={true} />}
+        </Form.Item>
+      ),
       secondCol: (
         <Form.Item name='healthHouse' label='Health House'>
-          <Input placeholder={data.healthHouse} value={'dwhabfaj'} />
+          {showInput ? <Input bordered={true} /> : <Input readOnly={true} />}
         </Form.Item>
       ),
     },
@@ -117,9 +155,34 @@ function PersonalInformation({ data }) {
     },
   ];
 
+  const handleFinish = (values) => {
+    const data = {
+      personalInformation: { ...values },
+      id: employee.id,
+    };
+    console.log(values);
+    dispatch(editEmployee(data));
+  };
+
   return (
     <div>
-      <Form name='personal-information' layout={'vertical'} form={form}>
+      <Button
+        shape={'circle'}
+        type='primary'
+        // style={{
+        //   backgroundColor: showInput ? '#1890ff' : '#f0f2f5',
+        //   color: showInput ? '#f0f2f5' : '#1890ff',
+        // }}
+        onClick={() => setShowInput(!showInput)}
+      >
+        <EditOutlined />
+      </Button>
+      <Form
+        name='personal-information'
+        layout={'vertical'}
+        initialValues={initialValues}
+        onFinish={handleFinish}
+      >
         {formInputsList.map((elem, i) => (
           <RowEmployee
             firstCol={elem.firstCol}
@@ -127,6 +190,11 @@ function PersonalInformation({ data }) {
             key={i}
           />
         ))}
+        {showInput && (
+          <Button type='primary' htmlType='submit'>
+            Save
+          </Button>
+        )}
       </Form>
     </div>
   );
