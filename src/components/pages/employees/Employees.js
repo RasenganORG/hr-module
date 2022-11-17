@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Card, Form, List, Input } from 'antd';
 import {
@@ -12,16 +12,30 @@ function Employees() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { employees } = useSelector((state) => state.employees);
+  const [filteredEmployees, setFilteredEmployees] = useState([]);
+
   const handleGoToEmployeePage = (id) => {
     dispatch(reset());
     navigate(`/employees/${id}`);
   };
 
+  // get employees from api
   useEffect(() => {
     dispatch(getAllEmployees());
   }, []);
 
-  console.log(employees);
+  // whenever we get the employees list from backend, store them in filteredEmployees
+  useEffect(() => {
+    setFilteredEmployees(employees);
+  }, [employees]);
+
+  const onChange = (event) => {
+    const searchValue = event.target.value.toLowerCase();
+    const newDataEmployees = employees.filter((employee) =>
+      employee.personalInformation.name.toLowerCase().includes(searchValue)
+    );
+    setFilteredEmployees(newDataEmployees);
+  };
 
   return (
     <div>
@@ -30,17 +44,17 @@ function Employees() {
         allowClear
         enterButton='Search'
         size='large'
+        onChange={onChange}
         // onSearch={onSearch}
       />
-      {employees.length > 0 && (
+      {filteredEmployees.length > 0 && (
         <List
-          dataSource={employees}
+          dataSource={filteredEmployees}
           renderItem={(employee) => (
             <Form.Item>
               <Card
                 title={employee.personalInformation.name}
                 onClick={() => {
-                  console.log(employee.id);
                   handleGoToEmployeePage(employee.id);
                 }}
               >
